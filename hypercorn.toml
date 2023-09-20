@@ -1,0 +1,6 @@
+workers = 4
+bind = "0.0.0.0:8080"
+
+logconfig_dict.version = 1
+logconfig_dict.disable_existing_loggers = false
+[logconfig_dict.loggers."hypercorn.error"]

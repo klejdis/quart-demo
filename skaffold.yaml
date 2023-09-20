@@ -1,0 +1,23 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: quart-demo
+build:
+  tagPolicy:
+    customTemplate:
+      template: "{{.SHORT_SHA}}-{{.DATETIME}}"
+      components:
+        - name: DATETIME
+          dateTime:
+            format: "200601021504"
+            timezone: "UTC"
+        - name: SHORT_SHA
+          gitCommit:
+            variant: AbbrevCommitSha
+  artifacts:
+    - image: quart-demo
+      docker:
+        dockerfile: Dockerfile
+        ssh: default
+  local:
+    useBuildkit: true

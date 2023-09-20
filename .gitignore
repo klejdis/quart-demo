@@ -1,0 +1,19 @@
+/__pycache__
+__pycache__/*
+__pycache__
+.pytest_cache
+/.pytest_cache
+/.vscode
+/.env
+/.venv
+
+# quart
+instance/
+
+# copier
+**/*.rej
+
+# mypy
+**/.mypy_cache
+
+.idea/

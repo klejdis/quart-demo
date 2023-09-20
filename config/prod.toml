@@ -1,0 +1,7 @@
+[quart_demo]
+base_path="/api/1/quart-demo"
+
+[quart_demo.quart]
+ENV="production"
+DEBUG=false
+TESTING=false

@@ -1,0 +1,8 @@
+# local development
+[quart_demo]
+base_path=""
+
+[quart_demo.quart]
+ENV="development"
+DEBUG=true
+TESTING=true
