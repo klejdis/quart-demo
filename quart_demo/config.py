@@ -1,4 +1,4 @@
-import typed_settings
+import typed_settings as typed_settings
 
 
 @typed_settings.settings
@@ -9,9 +9,16 @@ class Quart:
 
 
 @typed_settings.settings
+class Database:
+    uri: str
+    echo: bool
+
+
+@typed_settings.settings
 class Settings:
     quart: Quart
     base_path: str
+    database: Database
 
 
 settings = typed_settings.load_settings(
