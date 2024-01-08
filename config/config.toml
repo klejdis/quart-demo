@@ -1,6 +1,6 @@
 # local development
 [quart_demo]
-base_path=""
+base_path="/quart-demo"
 
 [quart_demo.quart]
 ENV="development"

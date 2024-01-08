@@ -1,7 +1,15 @@
 # Quart Demo
 
 this template is a demo for [Quart](https://gitlab.com/pgjones/quart) and to showcase
-how to do main things that are needed in a web application.
+how to do main things that are needed in a microservice.
+
+## Getting Started
+create a virtual environment and install the requirements
+```bash
+python3 -m venv venv
+source venv/bin/activate
+poetry install
+```
 
 ## Showcases
 ### A restfull set of endpoints for posts and comments + unit tests
