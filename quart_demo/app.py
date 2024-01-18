@@ -2,6 +2,7 @@ import logging
 
 from quart import Quart
 from quart_schema import Info, QuartSchema
+
 from quart_demo.config import settings
 from quart_demo.routes import bp
 

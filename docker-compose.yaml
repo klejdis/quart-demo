@@ -12,21 +12,3 @@ services:
       timeout: 5s
       retries: 5
       start_period: 5s
-
-  tests:
-    build:
-      context: .
-      args:
-        INSTALL_DEV_DEPS: "true"
-      ssh:
-        - default
-    depends_on:
-      quart-demo:
-        condition: service_healthy
-    command: .venv/bin/pytest .
-
-  wait:
-    image: hello-world:latest
-    depends_on:
-      tests:
-        condition: service_completed_successfully
