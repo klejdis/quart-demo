@@ -12,15 +12,9 @@ poetry install
 ```
 
 ## Showcases
-### A restfull set of endpoints for posts and comments + unit tests
-- [x] create post
-- [x] create comment
-- [x] delete post
-- [x] delete comment
-- [x] update post
-- [x] update comment
-- [x] get post
-- [x] get comment
+### A restfull set of endpoints for posts and comments + unit tests + sqlalchemy models
+- [x] CRUD post
+- [x] CRUD comment
 
 ### GCP
 

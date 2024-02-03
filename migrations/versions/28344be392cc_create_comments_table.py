@@ -19,7 +19,7 @@ def upgrade() -> None:
     op.create_table(
         "comments",
         sa.Column("id", sa.Integer, primary_key=True),
-        sa.Column("text", sa.String(200), nullable=False),
+        sa.Column("content", sa.String(200), nullable=False),
         sa.Column("post_id", sa.Integer, sa.ForeignKey("posts.id")),
     )
 
