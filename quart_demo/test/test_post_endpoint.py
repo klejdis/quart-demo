@@ -45,6 +45,25 @@ async def test_post_read_one(client: QuartClient, refresh_database: None) -> Non
     assert data == {"id": 1, "name": "Test Title", "description": "Test Content"}
 
 
+async def test_post_update(client: QuartClient, refresh_database: None) -> None:
+    # create a post
+    await client.post(
+        "/quart-demo/posts",
+        json={"name": "Test Title", "description": "Test Content"},
+    )
+
+    response = await client.put(
+        "/quart-demo/posts/1",
+        json={"name": "New Title", "description": "New Content"},
+    )
+
+    assert response.status_code == 200
+
+    data = await response.json
+
+    assert data == {'id': 1, 'name': 'New Title', 'description': 'New Content'}
+
+
 async def test_post_delete(client: QuartClient, refresh_database: None) -> None:
     # create a post
     await client.post(

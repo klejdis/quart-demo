@@ -3,7 +3,7 @@ from typing import Any
 from pydantic.main import BaseModel
 from quart import Blueprint
 from quart_schema import validate_request, validate_response
-from sqlalchemy import Result, delete, insert, select
+from sqlalchemy import Result, delete, insert, select, update
 
 from quart_demo.database.connection import async_session
 from quart_demo.models.models import Posts
@@ -64,6 +64,24 @@ async def create_post(data: CreatePostRequest) -> CreatedResponse:
         stmt = insert(Posts).values(name=data.name, description=data.description)
         result: Result[Any] = await session.execute(stmt)
     return CreatedResponse(success=True, id=result.lastrowid)  # type: ignore
+
+
+class UpdatePostRequest(BaseModel):
+    name: str | None
+    description: str | None
+
+
+@bp.put("/posts/<int:post_id>")
+@validate_request(UpdatePostRequest)
+async def update_post(post_id: int, data: UpdatePostRequest) -> dict[str, Any]:
+    async with async_session.begin() as session:
+        stmt = (
+            update(Posts)
+            .where(Posts.id == post_id)
+            .values(data.dict(exclude_none=True))
+        )
+        result = await session.execute(stmt)
+    return {"id": post_id, "name": data.name, "description": data.description}
 
 
 @bp.delete("/posts/<int:post_id>")
