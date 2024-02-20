@@ -1,4 +1,3 @@
-import pytest
 from quart.testing import QuartClient
 
 
@@ -61,7 +60,7 @@ async def test_post_update(client: QuartClient, refresh_database: None) -> None:
 
     data = await response.json
 
-    assert data == {'id': 1, 'name': 'New Title', 'description': 'New Content'}
+    assert data == {"id": 1, "name": "New Title", "description": "New Content"}
 
 
 async def test_post_delete(client: QuartClient, refresh_database: None) -> None:
@@ -78,3 +77,43 @@ async def test_post_delete(client: QuartClient, refresh_database: None) -> None:
     data = await response.json
 
     assert data == {"success": True, "rowcount": 1}
+
+
+async def test_post_add_comment(client: QuartClient, refresh_database: None) -> None:
+    # create a post
+    await client.post(
+        "/quart-demo/posts",
+        json={"name": "Test Title", "description": "Test Content"},
+    )
+
+    response = await client.post(
+        "/quart-demo/posts/1/comments",
+        json={"content": "Test Comment"},
+    )
+
+    assert response.status_code == 200
+
+    data = await response.json
+
+    assert data == {"success": True, "id": 1}
+
+
+async def test_post_read_comments(client: QuartClient, refresh_database: None) -> None:
+    # create a post
+    await client.post(
+        "/quart-demo/posts",
+        json={"name": "Test Title", "description": "Test Content"},
+    )
+    # add a comment
+    await client.post(
+        "/quart-demo/posts/1/comments",
+        json={"content": "Test Comment"},
+    )
+
+    response = await client.get("/quart-demo/posts/1/comments")
+
+    assert response.status_code == 200
+
+    data = await response.json
+
+    assert data == {"comments": [{"id": 1, "content": "Test Comment"}]}
