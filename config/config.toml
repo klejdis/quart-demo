@@ -10,3 +10,7 @@ TESTING=true
 [quart_demo.database]
 uri="sqlite+aiosqlite:///quart_demo.db"
 echo=true
+
+
+[quart_demo.json_placeholder]
+server_url="https://jsonplaceholder.typicode.com"

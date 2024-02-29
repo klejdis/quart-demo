@@ -15,10 +15,16 @@ class Database:
 
 
 @typed_settings.settings
+class JsonPlaceholder:
+    server_url: str
+
+
+@typed_settings.settings
 class Settings:
     quart: Quart
     base_path: str
     database: Database
+    json_placeholder: JsonPlaceholder
 
 
 settings = typed_settings.load_settings(

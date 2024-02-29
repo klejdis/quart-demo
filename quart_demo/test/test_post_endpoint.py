@@ -19,7 +19,7 @@ async def test_post_read(client: QuartClient, refresh_database: None) -> None:
         json={"name": "Test Title", "description": "Test Content"},
     )
 
-    response = await client.get("/quart-demo/posts")
+    response = await client.get("/quart-demo/posts",  headers={"Authorization": "token"})
 
     assert response.status_code == 200
 
@@ -117,3 +117,24 @@ async def test_post_read_comments(client: QuartClient, refresh_database: None) -
     data = await response.json
 
     assert data == {"comments": [{"id": 1, "content": "Test Comment"}]}
+
+
+async def test_delete_comment(client: QuartClient, refresh_database: None) -> None:
+    # create a post
+    await client.post(
+        "/quart-demo/posts",
+        json={"name": "Test Title", "description": "Test Content"},
+    )
+    # add a comment
+    await client.post(
+        "/quart-demo/posts/1/comments",
+        json={"content": "Test Comment"},
+    )
+
+    response = await client.delete("/quart-demo/comments/1")
+
+    assert response.status_code == 200
+
+    data = await response.json
+
+    assert data == {"success": True, "rowcount": 1}

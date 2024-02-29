@@ -11,10 +11,20 @@ source venv/bin/activate
 poetry install
 ```
 
+## Lint the code
+from the project root run
+the . means to scan the current directory
+it will run black, isort, flake8 and mypy
+```bash
+./bash/lint.sh .
+```
+
 ## Showcases
 ### A restfull set of endpoints for posts and comments + unit tests + sqlalchemy models
 - [x] CRUD post
 - [x] CRUD comment
+- [x] decorator to check if user is authenticated
+- [x] httpx base client to make requests to other services
 
 ### GCP
 
@@ -32,3 +42,4 @@ example to create a table and insert data into it
 
 - [x] [Quart](https://gitlab.com/pgjones/quart)
 - [x] sqlalchemy
+- [x] httpx

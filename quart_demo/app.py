@@ -3,6 +3,7 @@ import logging
 from quart import Quart
 from quart_schema import Info, QuartSchema
 
+from quart_demo.clients.json_placeholder import JsonPlaceholder
 from quart_demo.config import settings
 from quart_demo.routes import bp
 
@@ -15,6 +16,9 @@ def create_app() -> Quart:
     app.config.from_object(settings.quart)
     # this will prefix all routes with the base path
     app.register_blueprint(bp, url_prefix=f"{settings.base_path}")
+
+    # clients
+    JsonPlaceholder(server_url=settings.json_placeholder.server_url).init_app(app)
 
     QuartSchema(
         app,

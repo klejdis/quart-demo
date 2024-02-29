@@ -11,15 +11,18 @@ T = TypeVar("T", bound=DeclarativeBase)
 
 class BaseDao:
     @staticmethod
-    async def get_all(model: typing.Type[T], *criteria: typing.Any, opt: typing.Any | None) -> list[T]:
+    async def get_all(model: typing.Type[T], *criteria: typing.Any, opt: typing.Any | None = None) -> list[T]:
         async with async_session.begin() as session:
-            result = await session.execute(sa.select(model).filter(*criteria).options(opt))
+            select = sa.select(model).filter(*criteria)
+            if opt:
+                select.options(opt)
+            result = await session.execute(select)  # type: ignore
             return typing.cast(list[T], result.scalars().all())
 
     @staticmethod
     async def get_one(model: typing.Type[T], *criteria: typing.Any) -> T:
         async with async_session.begin() as session:
-            result = await session.execute(sa.select(model).filter(*criteria))
+            result = await session.execute(sa.select(model).filter(*criteria))  # type: ignore
             return typing.cast(T, result.scalars().first())
 
     @staticmethod
@@ -33,11 +36,11 @@ class BaseDao:
     @staticmethod
     async def update(model: typing.Type[T], *criteria: typing.Any, **kwargs: typing.Any) -> None:
         async with async_session.begin() as session:
-            result = await session.execute(sa.update(model).filter(*criteria).values(**kwargs))
+            await session.execute(sa.update(model).filter(*criteria).values(**kwargs))  # type: ignore
 
     @staticmethod
     async def delete(model: typing.Type[T], *criteria: typing.Any) -> int:
         async with async_session.begin() as session:
-            result = await session.execute(sa.delete(model).filter(*criteria))
+            result = await session.execute(sa.delete(model).filter(*criteria))  # type: ignore
             await session.commit()
-            return result.rowcount
+            return result.rowcount  # type:ignore
