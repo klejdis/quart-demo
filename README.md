@@ -25,7 +25,8 @@ it will run black, isort, flake8 and mypy
 - [x] CRUD comment
 - [x] decorator to check if user is authenticated
 - [x] httpx base client to make requests to other services
-
+- [x] dockerfile to run the app in a container
+- [x] github workflow to run tests and lint the code one PR opened
 ### GCP
 
 #### pubsub 
@@ -37,9 +38,10 @@ example to create a table and insert data into it
 
 
 
-
 ## Features
 
 - [x] [Quart](https://gitlab.com/pgjones/quart)
 - [x] sqlalchemy
 - [x] httpx
+- [x] docker
+- [x] cloud first (gcp)
