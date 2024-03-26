@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: quart-demo
+spec:
+    type: ClusterIP
+    selector:
+        app: quart-demo
+    ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: quart-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quart-demo
+  template:
+    metadata:
+        labels:
+            app: quart-demo
+    spec:
+      containers:
+      - name: quart-demo
+        image: quart-demo:latest
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /quart-demo/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 3
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "640Mi"
+          limits:
+            memory: "700Mi"
+            cpu: "500m"

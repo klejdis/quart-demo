@@ -1,3 +1,5 @@
+import asyncio
+from random import random
 from typing import Any, Callable
 
 from pydantic.main import BaseModel
@@ -5,7 +7,7 @@ from quart import Blueprint, request
 from quart_schema import validate_request, validate_response
 from sqlalchemy import Result, insert
 from sqlalchemy.orm import selectinload
-from werkzeug.exceptions import Unauthorized
+from werkzeug.exceptions import Unauthorized, BadRequest
 
 from quart_demo.database.connection import async_session
 from quart_demo.models.models import Comments, Posts
@@ -34,7 +36,7 @@ class DeletedResponse(BaseModel):
     rowcount: int
 
 
-@bp.route("/hello")
+@bp.route("/health")
 async def hello() -> str:
     return "Hello, World!"
 
