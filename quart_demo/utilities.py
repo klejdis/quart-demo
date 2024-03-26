@@ -9,7 +9,7 @@ class SingletonMeta(type):
     """
 
     _instances: dict[Any, Any] = {}
-gt
+
     def __call__(cls, *args: Any, **kwargs: Any) -> Any:
         """
         Possible changes to the value of the `__init__` argument do not affect
