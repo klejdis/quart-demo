@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class SingletonMeta(type):
     """
     The Singleton class can be implemented in different ways in Python. Some
@@ -5,9 +8,9 @@ class SingletonMeta(type):
     metaclass because it is best suited for this purpose.
     """
 
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
+    _instances: dict[Any, Any] = {}
+gt
+    def __call__(cls, *args: Any, **kwargs: Any) -> Any:
         """
         Possible changes to the value of the `__init__` argument do not affect
         the returned instance.

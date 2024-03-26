@@ -15,7 +15,7 @@ class BaseDao:
         async with async_session.begin() as session:
             select = sa.select(model).filter(*criteria)
             if opt:
-                select.options(opt)
+                select.options(opt)  # type: ignore
             result = await session.execute(select)  # type: ignore
             return typing.cast(list[T], result.scalars().all())
 
