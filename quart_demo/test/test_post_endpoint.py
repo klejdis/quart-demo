@@ -19,7 +19,7 @@ async def test_post_read(client: QuartClient, refresh_database: None) -> None:
         json={"name": "Test Title", "description": "Test Content"},
     )
 
-    response = await client.get("/quart-demo/posts",  headers={"Authorization": "token"})
+    response = await client.get("/quart-demo/posts", headers={"Authorization": "token"})
 
     assert response.status_code == 200
 
