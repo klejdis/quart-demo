@@ -38,7 +38,7 @@ class DeletedResponse(BaseModel):
 
 @bp.route("/health")
 async def hello() -> str:
-    return "Hello, World!"
+    return "Hello, World!!"
 
 
 class PostsResponse(BaseModel):
