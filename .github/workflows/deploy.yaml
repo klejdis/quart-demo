@@ -78,3 +78,15 @@ jobs:
           poetry install
       - name: Ensure code is formatted
         run: poetry run black --check .
+  lint:
+    name: Lint
+    needs:
+      - deps
+    runs-on: ubuntu-${{ inputs.ubuntu-version }}
+    timeout-minutes: 15
+    steps:
+      - name: Flake8
+        run: poetry run flake8
+      - name: Isort
+        if: '!inputs.skip-isort'
+        run: poetry run isort --profile black --check .
