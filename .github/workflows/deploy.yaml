@@ -1,0 +1,80 @@
+name: Build and Deploy
+"on":
+  push:
+    branches:
+    - main
+  pull_request: null
+  workflow_dispatch: null
+jobs:
+  pre-job:
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    timeout-minutes: 15
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5
+  deps:
+    runs-on: ubuntu-22.04
+    name: Dependencies
+    needs:
+      - pre-job
+    if: needs.pre-job.outputs.should_skip != 'true'
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup python
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      - name: Setup cache
+        id: deps-cache
+        uses: actions/cache@v3
+        with:
+          path: .venv/
+          key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.6.1
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+      - name: Download poetry packages
+        run: |-
+          git config --global url."git@github.com:".insteadOf "https://github.com/"
+          poetry install
+  black:
+    name: Black
+    needs:
+      - deps
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        if: '!inputs.skip-checkout'
+        uses: actions/checkout@v3
+      - name: Setup python
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      - name: Setup cache
+        id: deps-cache
+        uses: actions/cache@v3
+        with:
+          path: .venv/
+          key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.6.1
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+      - name: Download poetry packages
+        run: |-
+          git config --global url."git@github.com:".insteadOf "https://github.com/"
+          poetry install
+      - name: Ensure code is formatted
+        run: poetry run black --check .
